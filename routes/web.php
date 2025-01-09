@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 //主页
-Route::get('/','StaticPagesController@home');
+Route::get('/','StaticPagesController@home')->name('home');
 
 //帮助页
-Route::get('/help','StaticPagesController@help');
+Route::get('/help','StaticPagesController@help')->name('help');
 
 //关于页
-Route::get('/about','StaticPagesController@about');
+Route::get('/about','StaticPagesController@about')->name('about');

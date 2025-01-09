@@ -11975,7 +11975,7 @@ nav.navbar.navbar-expand-lg {
 }
 
 /* footer */
-footer {
+.footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid #eaeaea;
@@ -11983,13 +11983,13 @@ footer {
   font-size: 13px;
   font-weight: bold;
 }
-footer a {
+.footer a {
   color: #555;
 }
-footer a:hover {
+.footer a:hover {
   color: #222;
 }
-footer img.brand-icon {
+.footer img.brand-icon {
   width: 17px;
   height: 17px;
 }
