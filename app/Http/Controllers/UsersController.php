@@ -11,7 +11,7 @@ class UsersController extends Controller
     //使用中间件
     public function __construct(){
         // 指定动作 不使用 Auth 中间件进行过滤,除了此处指定的动作以外，所有其他动作都必须登录用户才能访问
-        $this->middleware('auth',['except'=>['show','create','store']]);
+        $this->middleware('auth',['except'=>['show','create','store','index']]);
         //只让未登录用户访问注册页面
         $this->middleware('guest', [
             'only' => ['create']
@@ -64,6 +64,12 @@ class UsersController extends Controller
         $user->update($data);
         session()->flash('success','个人资料更新成功');
         return redirect()->route('users.show', $user->id);
+    }
+
+    public function index()
+    {
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
 }
