@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Laravel 分页没有使用 Bootstrap ，我们只需要在 AppServiceProvider 中设置使用 Bootstrap
+        \Illuminate\Pagination\Paginator::useBootstrap();
     }
 }
