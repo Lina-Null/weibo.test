@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 
 class SessionsController extends Controller
 {
+    public function __construct()
+    {
+        //Auth 中间件提供的 guest 选项，用于指定一些只允许未登录用户访问的动作
+        $this->middleware('guest',[
+            'only' => ['create']
+        ]);
+    }
     //
     public function create()
     {
@@ -20,7 +27,8 @@ class SessionsController extends Controller
         if (Auth::attempt($credentials,$request->has('remember'))) {
             // 登录成功后的相关操作
             session()->flash('success', '欢迎回来！');
-            return redirect()->route('users.show', [Auth::user()]);
+            $fallback = route('users.show',Auth::user());
+            return redirect()->intended($fallback);
 
         } else {
             // 登录失败后的相关操作

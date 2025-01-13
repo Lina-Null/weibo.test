@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+    //使用中间件
+    public function __construct(){
+        // 指定动作 不使用 Auth 中间件进行过滤,除了此处指定的动作以外，所有其他动作都必须登录用户才能访问
+        $this->middleware('auth',['except'=>['show','create','store']]);
+        //只让未登录用户访问注册页面
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+    }
     //创建用户
     public function create(){
         return view('users.create');
@@ -36,11 +45,13 @@ class UsersController extends Controller
     }
 
     public function edit(User $user){
+        $this->authorize('update', $user);
         //$this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user){
+        $this->authorize('update', $user);
         $this->validate($request,[
             'name' => 'required|max:50',
             'password' => 'nullable|confirmed|min:6'
