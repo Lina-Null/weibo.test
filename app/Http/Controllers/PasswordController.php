@@ -13,6 +13,17 @@ use Carbon\Carbon;
 
 class PasswordController extends Controller
 {
+    public function __construct(){
+        //1分钟只能尝试2次
+        $this->middleware('throttle:2,1',[
+            'only' => ['showLinkRequestForm']
+        ]);
+        //10分钟只能限制3次
+        $this->middleware('throttle:3,10', [
+            'only' => ['sendResetLinkEmail']
+        ]);
+    }
+
     //
     public function showLinkRequestForm()
     {
