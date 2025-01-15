@@ -72,4 +72,43 @@ class User extends Authenticatable
         return $this->statuses()
                     ->orderBy('created_at', 'desc');
     }
+
+    public function followers()
+    {
+        //1个用户可以有多个粉丝
+        //belongsToMany 方法的第三个参数 user_id 是定义在关联中的模型外键名，而第四个参数 follower_id 则是要合并的模型外键名。
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
+    }
+
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id');
+    }
+
+    public function follow($user_ids)
+    {
+        //用于判断参数是否为数组，如果已经是数组，则没有必要再使用 compact 方法
+        if ( ! is_array($user_ids)) {
+            $user_ids = compact('user_ids');
+        }
+        //sync 会自动获取数组中的 id
+        $this->followings()->sync($user_ids, false);
+    }
+
+    public function unfollow($user_ids)
+    {
+        //用于判断参数是否为数组，如果已经是数组，则没有必要再使用 compact 方法
+        if ( ! is_array($user_ids)) {
+            $user_ids = compact('user_ids');
+        }
+        //detach 会自动获取数组中的 id
+        $this->followings()->detach($user_ids);
+    }
+
+    //判断当前登录的用户 A 是否关注了用户 B
+    //只需判断用户 B 是否包含在用户 A 的关注人列表上即可
+    public function isFollowing($user_id)
+    {
+        return $this->followings->contains($user_id);
+    }
 }
