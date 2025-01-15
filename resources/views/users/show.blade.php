@@ -1,6 +1,5 @@
 @extends('layouts.default')
-
-@section('title',$user->name)
+@section('title', $user->name)
 
 @section('content')
 <div class="row">
@@ -8,8 +7,10 @@
     <section class="user_info">
       @include('shared._user_info', ['user' => $user])
     </section>
+    <section class="stats mt-2">
+      @include('shared._stats', ['user' => $user])
+    </section>
     <section class="status">
-      {{-- $statuses->count() 方法来判断当前页面是否存在微博动态，如果不存在则不对微博的局部视图和分页链接进行渲染 --}}
       @if ($statuses->count() > 0)
         <ul class="list-unstyled">
           @foreach ($statuses as $status)
